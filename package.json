@@ -1,0 +1,19 @@
+{
+  "name": "takhshila",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pratikraj26/takhshila.git"
+  },
+  "author": "PratikRaj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pratikraj26/takhshila/issues"
+  },
+  "homepage": "https://github.com/pratikraj26/takhshila#readme"
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="takhshila">
+<head>
+	<title>AngularJS, Express and Socket.io Basic Skeleton</title>
+	<base href="/">
+	<!-- Load the socket client file -->
+	<script src="/socket.io/socket.io.js"></script>
+
+	<!-- Load angular js file -->
+	<script src="bower_components/angular/angular.min.js"></script>
+
+	<!-- Load angular component files -->
+	<script src="bower_components/angular-route/angular-route.min.js"></script>
+
+	<!-- Load app files -->
+	<script src="main.js"></script>
+	<script src="/js/controllers.js"></script>
+	<script src="/js/directive.js"></script>
+	<script src="/js/socketFactory.js"></script>
+	<script src="/js/factory.js"></script>
+
+	<link rel="stylesheet" href="/css/app.css">
+</head>
+<body ng-controller="MainCtrl">
+	<div ng-include src = "'/views/header.html'"></div>
+	<div class = "container">
+		<section ng-view></section>
+		<center>
+			<p>This page is {{page}}. The name has been requested from the controller</p>
+		</center>
+	</div>
+</body>
+</html>
