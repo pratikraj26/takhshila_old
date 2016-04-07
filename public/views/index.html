@@ -1,3 +1,130 @@
-<center>
-  <h1>Welcome to Basic angular website with express and socket.io :)</h1>
-</center>
+<div id="hero" class="static-header register-version light clearfix">
+
+  <div class="text-heading">
+    <h1 class="animated" data-animation="bounceInDown" data-delay="0">It's better to &mdash; <span class="highlight">learn</span> from the experts!</h1>
+    <p class="animated" data-animation="fadeInDown" data-delay="500">Get lessons over video chat at Anytime from Anywhere</p>
+  </div>
+
+  <div class="container">
+    <div class="signup-wrapper animated" data-animation="bounceInUp" data-delay="0">
+      <div class="row">
+        <div class = "col-md-1 col-sm-12 col-xs-12">
+        </div>
+        <div class = "col-md-10 col-sm-12 col-xs-12">
+          <form class="form-inline form-register form-register-small">
+            <div class = "col-md-7 col-sm-12 col-xs-12">
+              <input class="form-control" type="text" placeholder="Enter topic or subject you need help with...">
+            </div>
+            <div class = "col-md-3 col-sm-12 col-xs-12">
+              <dropdown class = "form-control" title="Selcet Level" ng-model="dropdown_model" open="false" ng-focus = "open = 'true'">
+                <dropdown-group>Basic</dropdown-group>
+                <dropdown-group>Intermediate</dropdown-group>
+                <dropdown-group>Advanced</dropdown-group>
+                <dropdown-group>Expert</dropdown-group>
+              </dropdown>
+            </div>
+            <div class = "col-md-2 col-sm-12 col-xs-12">
+              <div type="submit" ng-init = "searching = false" ng-click = "searching = !searching" ng-class = "{'loading': searching}" class="form-control ui button primary" lx-ripple>Search</div>
+            </div>
+            <div class = "clear clearfix"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="clients">
+  <div class="container">
+    <div class = "col-md-1 col-sm-12 col-xs-12">
+    </div>
+    <div class = "col-md-10 col-sm-12 col-xs-12">
+      <div class="fluid ui steps box-shadow">
+        <div class="active step">
+          <i class="search icon"></i>
+          <div class="content">
+            <div class="title">Search</div>
+            <div class="description">Search for teachers with<br> subject or topics you need<br> help with.</div>
+          </div>
+        </div>
+        <div class="active step">
+          <i class="users icon"></i>
+          <div class="content">
+            <div class="title">Schedule</div>
+            <div class="description">Choose the best teachers <br>from the list of industy <br>experts and schedule a class.</div>
+          </div>
+        </div>
+        <div class="active step">
+          <i class="laptop icon"></i>
+          <div class="content">
+            <div class="title">Learn</div>
+            <div class="description">Learn from the expert over<br> video chat with the <br>comfort of home.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<section id="teachers" class="section dark">
+  <div class="container">
+    <div class="section-header animated fadeInDown visible" data-animation="fadeInDown">
+      <h2>Featured <span class="highlight">Teachers</span></h2>
+    </div>
+    <div class="section-content row">
+      <div class="member col-md-3 col-sm-3 col-xs-6 animated fadeInDown visible" data-animation="fadeInDown">
+        <div class="thumb-wrapper">
+          <div class="overlay img-circle"></div>
+          <div class="socials">
+              <a href="#"><i class="icon facebook"></i></a><a href="#"><i class="icon google plus"></i></a><a href="#"><i class="icon twitter"></i></a><a href="#"><span class="icon icon-socialmedia-09"></span></a>
+          </div>
+          <img src="/img/people/team-1.jpg" class="img-responsive img-circle" alt="thumb">
+        </div>
+        <span class="h7 highlight">DANIEL DASH</span>
+        <p class="thin">Designer</p>
+      </div>
+
+      <div class="member col-md-3 col-sm-3 col-xs-6 animated fadeInDown visible" data-animation="fadeInDown" data-delay="250">
+        <div class="thumb-wrapper">
+          <div class="overlay img-circle"></div>
+          <div class="socials">
+            <a href="#"><i class="icon facebook"></i></a><a href="#"><i class="icon google plus"></i></a><a href="#"><i class="icon twitter"></i></a><a href="#"><span class="icon icon-socialmedia-09"></span></a>
+          </div>
+          <img src="/img/people/team-4.jpg" class="img-responsive img-circle" alt="thumb">
+        </div>
+        <span class="h7 highlight">PETRA APPLES</span>
+        <p class="thin">Designer</p>
+      </div>
+
+      <div class="member col-md-3 col-sm-3 col-xs-6 animated fadeInDown visible" data-animation="fadeInDown" data-delay="500">
+        <div class="thumb-wrapper">
+          <div class="overlay img-circle"></div>
+          <div class="socials">
+            <a href="#"><i class="icon facebook"></i></a><a href="#"><i class="icon google plus"></i></a><a href="#"><i class="icon twitter"></i></a><a href="#"><span class="icon icon-socialmedia-09"></span></a>
+          </div>
+          <img src="/img/people/team-3.jpg" class="img-responsive img-circle" alt="thumb">
+        </div>
+        <span class="h7 highlight">MIKE LYNTON</span>
+        <p class="thin">Designer</p>
+      </div>
+
+      <div class="member col-md-3 col-sm-3 col-xs-6 animated fadeInDown visible" data-animation="fadeInDown" data-delay="750">
+        <div class="thumb-wrapper">
+          <div class="overlay img-circle"></div>
+          <div class="socials">
+            <a href="#"><i class="icon facebook"></i></a><a href="#"><i class="icon google plus"></i></a><a href="#"><i class="icon twitter"></i></a><a href="#"><span class="icon icon-socialmedia-09"></span></a>
+          </div>
+          <img src="/img/people/team-2.jpg" class="img-responsive img-circle" alt="thumb">
+        </div>
+        <span class="h7 highlight">AMY PIERS</span>
+        <p class="thin">Designer</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+<div class = "grayBg center padding">
+  <a ng-href = "">Browse all</a>
+</div>

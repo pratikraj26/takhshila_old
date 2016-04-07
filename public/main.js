@@ -1,26 +1,31 @@
-var app = angular.module('takhshila', ['ngRoute'])
+var app = angular.module('takhshila', ['ngRoute', 'angularify.semantic'])
 
 .config(function ($routeProvider, $locationProvider) {
   $routeProvider
 
   .when('/', {
     templateUrl: 'views/index.html',
-    controller: 'IndexCtrl',
+    controller: 'IndexCtrl'
+  })
+
+  .when('/teach', {
+    templateUrl: 'views/teach.html',
+    controller: 'TeachCtrl'
   })
 
   .when('/register', {
     templateUrl: 'views/register.html',
-    controller: 'RegisterCtrl',
+    controller: 'RegisterCtrl'
   })
 
   .when('/login', {
     templateUrl: 'views/login.html',
-    controller: 'LoginCtrl',
+    controller: 'LoginCtrl'
   })
 
   .when('/profile', {
     templateUrl: 'secureViews/profile.html',
-    controller: 'ProfileCtrl',
+    controller: 'ProfileCtrl'
   })
 
   .when('/404', {
