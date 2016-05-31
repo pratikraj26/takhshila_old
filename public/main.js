@@ -1,5 +1,10 @@
 var app = angular.module('takhshila', ['ngRoute', 'angularify.semantic'])
 
+.constant('ApiEndpoint', {
+  url: 'http://localhost/linked100/api/ajax.php',
+  serverBase: 'http://www.ziptown.co.in/linked100/api/'
+})
+
 .config(function ($routeProvider, $locationProvider) {
   $routeProvider
 

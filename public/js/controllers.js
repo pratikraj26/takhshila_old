@@ -1,6 +1,6 @@
 app
 
-.controller('MainCtrl', function($scope, $rootScope, socket) {
+.controller('MainCtrl', function($scope, $rootScope, socket, Api) {
   $rootScope.page = null;
   $scope.scroll = null;
   $scope.navStick = false;
@@ -15,6 +15,20 @@ app
       console.log(data);
     });
   }
+
+  var data = {
+    controller: 'user',
+    action: 'getCountries'
+  };
+
+  Api.processRequest(data)
+  .then(function(response){
+    console.log(response);
+  })
+  .catch(function(error){
+    console.log(error);
+  })
+
   $scope.$watch('scroll', function(value){
     // console.log("The value is: " + value);
     if(value > 420){

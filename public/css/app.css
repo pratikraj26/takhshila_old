@@ -183,7 +183,7 @@ a, span, .btn, .package-title, .package-price, .package-detail li, .overlay, .so
   background: transparent;
   padding: 10px 0px;
   display: block;
-  margin-left: -30px;
+  margin-left: -10px;
   width: 100%;
   font-weight: 100;
   font-size: 13px;
@@ -193,6 +193,17 @@ a, span, .btn, .package-title, .package-price, .package-detail li, .overlay, .so
   height: 100%;
   background: rgba(0, 0, 0, 0.15);
   position: absolute;
+}
+.background-overlay-dark{
+  display: block;
+  position: absolute;
+  width:100%;
+  height: 100%;
+  text-align: center;
+  background-color: #0f0e0e;
+  -khtml-opacity: 0.35;
+  -moz-opacity: 0.35;
+  opacity: 0.35;
 }
 .brand-logo .sr-only .default-color {
   color: #984BFC;
