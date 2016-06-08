@@ -7,13 +7,7 @@ app
   $scope.current = 'default';
 
   $rootScope.connectSocketIO = function(){
-    socket.on('connect', function(data) {
-      socket.emit('join', 'Hello World from client');
-    });
 
-    socket.on('joinConfirm', function(data){
-      console.log(data);
-    });
   }
 
   var data = {
