@@ -1,17 +1,17 @@
 // Server code starts
-var express       = require('express'),
-    app           = express(),
-    server        = require('http').createServer(app),
-    io            = require('socket.io').listen(server),
-    validator     = require('validator'),
-    md5           = require('md5'),
-    jwt           = require('jsonwebtoken'),
-		bodyParser    = require('body-parser'),
-		device				= require('express-device'),
-		uncapitalize	= require('express-uncapitalize'),
-    authorize     = require('./authorize'),
-    db            = require('./db'),
-    onlineUsers  = [];
+var express         = require('express'),
+    app             = express(),
+    server          = require('http').createServer(app),
+    io              = require('socket.io').listen(server),
+    validator       = require('validator'),
+    md5             = require('md5'),
+    jwt             = require('jsonwebtoken'),
+		bodyParser      = require('body-parser'),
+		device				  = require('express-device'),
+		uncapitalize	  = require('express-uncapitalize'),
+    validateRequest = require('./authorize'),
+    db              = require('./db'),
+    onlineUsers     = [];
 
 var config = {
 	port: process.env.PORT || 3000,
@@ -25,9 +25,9 @@ app.use(device.capture({ parseUserAgent: true }));
 device.enableDeviceHelpers(app);
 device.enableViewRouting(app);
 
-app.get('/views*', authorize.validateRequest);
+app.get('/views*', validateRequest.validate);
 
-app.get('/secureViews/*', authorize.validateRequest, authorize.ensureAuthorized);
+app.get('/secureViews/*', validateRequest.validate, validateRequest.ensureAuthorized);
 
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
