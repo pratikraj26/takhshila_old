@@ -1,5 +1,5 @@
 var mongoose  = require('mongoose'),
-    md5       = require('md5');
+md5       = require('md5');
 
 var userSchema = mongoose.Schema({
   name: {
@@ -78,6 +78,23 @@ module.exports = {
       }else {
         console.log("Database connected");
       }
+    });
+  },
+
+  validateDetails: function(data, callback){
+    var output = {
+      success: false,
+      data: null,
+      error: null
+    };
+    user.findOne({'email': data.email, 'password': md5(data.password)}, '_id name email user_type country_code dial_code phone joined_on', function(err, result){
+      if(err){
+        output.error = "Oops! Something went wrong. We are working to fix this.";
+      }else {
+        output.success = true;
+        output.data = result;
+      }
+      callback(output);
     });
   },
 

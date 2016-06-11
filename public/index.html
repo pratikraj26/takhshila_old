@@ -65,23 +65,25 @@
 					<div class="ui horizontal divider">
 						Or
 					</div>
-					<div class="ui form">
-						<div class="field">
+					<form class="ui form" name = "loginForm" novalidate ng-submit = "login()">
+						<div class="field" ng-class = "{'error': loginForm.email.$invalid && loginForm.email.$dirty}">
 							<lx-text-field label="Email ID">
-									<input type="text" ng-model="loginForm.Email">
+									<input type="email" name = "email" ng-model="loginData.email" required>
 							</lx-text-field>
+						</div>
+						<div class="field" ng-class = "{'error': loginForm.password.$invalid && loginForm.password.$dirty}">
 							<lx-text-field label="Password">
-									<input type="password" ng-model="loginForm.password">
+									<input type="password" name = "password" ng-model="loginData.password" required>
 							</lx-text-field>
 						</div>
 						<br>
-						<button ng-init = "logging = false" ng-click = "logging = !logging" ng-class = "{'loading': logging}" class="ui button primary" lx-ripple>Login</button>
+						<button ng-click = "login()" ng-disabled = "loginProcess" ng-class = "{'loading': loginProcess}" class="ui button primary" lx-ripple>Login</button>
 						<div class = "row">
 							<div class = "col-md-12 col-sm-12 col-xs-12 login-modal-additional-link">
 								<a ng-href = "#" ng-click = "current = 'forgot-password'">Forgot Password ?</a>
 							</div>
 						</div>
-					</div>
+					</form>
 				</div>
 				<div class = "login-modal-bottom">
 					<div class="ui horizontal divider">

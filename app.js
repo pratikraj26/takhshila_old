@@ -9,7 +9,7 @@ var express         = require('express'),
 		bodyParser      = require('body-parser'),
 		device				  = require('express-device'),
 		uncapitalize	  = require('express-uncapitalize'),
-    validateRequest = require('./authorize'),
+    validateRequest = require('./validateRequest'),
     db              = require('./db'),
     onlineUsers     = [];
 
@@ -172,15 +172,11 @@ io.on('connection', function(client) {
                     'email' : response.user_data.email
                   };
                   var loggedInToken = generateJWT(publicProfile, client.userAgent);
-                  if(loggedInToken){
-                    output.success = true;
-                    output.data = publicProfile;
-                    output.loggedInToken = loggedInToken;
-                    client.userAuthenticated = true;
-                    client.userProfile = publicProfile;
-                  }else{
-                    output.error = "You have been registered successfully. But an error occured during authentication. Please login.";
-                  }
+                  output.success = true;
+                  output.data = publicProfile;
+                  output.loggedInToken = loggedInToken;
+                  client.userAuthenticated = true;
+                  client.userProfile = publicProfile;
                 }else{
                   output.error = response.error;
                 }
@@ -200,6 +196,61 @@ io.on('connection', function(client) {
       }
     }else{
       output.error = "You are already logged in. Please logout and then try registering.";
+      callback(output);
+    }
+  });
+
+  client.on('login', function(data, callback){
+    var output = {
+      success: false,
+      error: null,
+      data: null
+    };
+    if(!client.userAuthenticated){
+      for(var item in data){
+        data[item] = validator.trim(data[item]);
+        data[item] = validator.escape(data[item]);
+      }
+
+      if(data.email === null || data.email === undefined){
+        output.error = "Invalid details: Email";
+      }else{
+        if(!validator.isEmail(data.email)){
+          output.error = "Invalid email ID.";
+        }
+      }
+      if(data.password === null || data.password === undefined){
+        output.error = "Invalid details: Password";
+      }
+
+      if(output.error === null){
+        db.validateDetails(data, function(response){
+          if(response.success){
+            if(response.data !== null){
+              var publicProfile = {
+                'user_id' : response.data._id,
+                'name'    : response.data.name,
+                'email'   : response.data.email
+              };
+              var loggedInToken = generateJWT(publicProfile, client.userAgent);
+              output.success = true;
+              output.data = publicProfile;
+              output.loggedInToken = loggedInToken;
+              client.userAuthenticated = true;
+              client.userProfile = publicProfile;
+            }else{
+              output.error = "The email ID and/or password is incorrect.";
+            }
+          }else{
+            output.error = response.error;
+          }
+          callback(output);
+        });
+      }else{
+        callback(output);
+      }
+    }else{
+      output.error = "You are already logged in. Please logout and then try login again.";
       callback(output);
     }
   });

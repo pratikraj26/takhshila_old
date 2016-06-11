@@ -8,7 +8,9 @@ app
   $scope.current = 'default';
 
   $rootScope.registerProcess = false;
+  $rootScope.loginProcess = false;
   $rootScope.registerData = {};
+  $rootScope.loginData = {};
   $rootScope.registerData.user_type = 'student';
 
   $rootScope.$watch('loggedInToken', function(loggedInToken){
@@ -47,6 +49,27 @@ app
 
     socket.emit('register', data, function(response){
       $rootScope.registerProcess = false;
+      console.log(response);
+      if(response.success){
+        $rootScope.loggedIn = true;
+        $rootScope.currentUser = response.data;
+        $cookies.put('loggedInToken', response.loggedInToken);
+        $scope.close_login_modal();
+      }else{
+        alert(response.error);
+      }
+    });
+  }
+
+  $rootScope.login = function(){
+    $rootScope.loginProcess = true;
+    var data = {
+      'email': $rootScope.loginData.email,
+      'password': $rootScope.loginData.password
+    };
+
+    socket.emit('login', data, function(response){
+      $rootScope.loginProcess = false;
       console.log(response);
       if(response.success){
         $rootScope.loggedIn = true;
