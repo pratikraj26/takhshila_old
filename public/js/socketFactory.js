@@ -1,6 +1,13 @@
 app
 .factory('socket', function($rootScope) {
 	var socket = io.connect();
+	// $rootScope.$watch('loggedInToken', function(loggedInToken){
+	// 	if(loggedInToken !== undefined){
+	// 		socket = io.connect('', {
+	// 			query: 'loggedInToken='+$rootScope.loggedInToken
+	// 		});
+	// 	}
+	// });
 	return {
 		on: function(eventName, callback) {
 			socket.on(eventName, function() {

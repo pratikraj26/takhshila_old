@@ -20,6 +20,7 @@
 	<script src='/js/particles.min.js'></script>
 	<script src="bower_components/angular/angular.min.js"></script>
 	<script src="bower_components/angular-route/angular-route.min.js"></script>
+	<script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
 	<script src="bower_components/semantic/dist/semantic.min.js"></script>
 	<script src="bower_components/angular-semantic-ui/dist/angular-semantic-ui.js"></script>
 
@@ -95,19 +96,32 @@
 						<i class="angle left icon" ng-click = "current = 'default'"></i>
 						Sign Up With Your Email
 					</div>
-					<div class="ui form">
-						<div class="field">
-							<lx-text-field label="Email ID">
-									<input type="text" ng-model="loginForm.Email">
+					<form class="ui form" name = "registerForm" novalidate ng-submit = "register()">
+						<div class="field" ng-class = "{'error': registerForm.first_name.$invalid && registerForm.first_name.$dirty}">
+							<lx-text-field label="First Name">
+									<input type="text" name = "first_name" ng-model="registerData.first_name" required>
 							</lx-text-field>
+						</div>
+						<div class="field" ng-class = "{'error': registerForm.last_name.$invalid && registerForm.last_name.$dirty}">
+							<lx-text-field label="Last Name">
+									<input type="text" name = "last_name" ng-model="registerData.last_name" required>
+							</lx-text-field>
+						</div>
+						<div class="field" ng-class = "{'error': registerForm.email.$invalid && registerForm.email.$dirty}">
+							<lx-text-field label="Email ID">
+									<input type="text" name = "email" ng-model="registerData.email" required>
+							</lx-text-field>
+						</div>
+						<div class="field" ng-class = "{'error': registerForm.password.$invalid && registerForm.password.$dirty}">
 							<lx-text-field label="Password">
-									<input type="password" ng-model="loginForm.password">
+									<input type="password" name = "password" ng-model="registerData.password" required>
 							</lx-text-field>
 						</div>
 						<br>
-						<button ng-init = "registering = false" ng-click = "registering = !registering" ng-class = "{'loading': registering}" class="ui button primary" lx-ripple>Login</button>
-					</div>
+						<button ng-click = "register()" ng-disabled = "registerProcess" ng-class = "{'loading': registerProcess}" class="ui button primary" lx-ripple>Register</button>
+					</form>
 				</div>
+				<div class = "clear"></div>
 				<div class = "login-modal-bottom">
 					<div class="ui horizontal divider">
 						&nbsp;

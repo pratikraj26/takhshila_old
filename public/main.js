@@ -1,8 +1,22 @@
-var app = angular.module('takhshila', ['ngRoute', 'angularify.semantic'])
+var app = angular.module('takhshila', ['ngRoute', 'ngCookies', 'angularify.semantic'])
 
-.constant('ApiEndpoint', {
-  url: 'http://localhost/linked100/api/ajax.php',
-  serverBase: 'http://www.ziptown.co.in/linked100/api/'
+// .factory('authInterceptor', function ($rootScope, $q, $location) {
+//     return {
+//         // Add authorization token to headers
+//         request: function (config) {
+//             config.headers = config.headers || {};
+//             var token = $rootScope.token;
+//             config.headers['x-auth-token'] = token;
+//             return config;
+//         }
+//     };
+// })
+//
+.run(function($cookies, $rootScope){
+  $rootScope.loggedInToken = null;
+  if($cookies.get('loggedInToken') !== undefined && $cookies.get('loggedInToken') !== null){
+    $rootScope.loggedInToken = $cookies.get('loggedInToken');
+  }
 })
 
 .config(function ($routeProvider, $locationProvider) {

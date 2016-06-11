@@ -71,6 +71,9 @@ a, span, .btn, .package-title, .package-price, .package-detail li, .overlay, .so
 #login-modal{
   height: 520px;
 }
+#login-modal .scroll{
+  overflow-y: scroll;
+}
 #login-modal .modal-content{
   height: 100%;
   overflow: hidden;
@@ -110,7 +113,7 @@ a, span, .btn, .package-title, .package-price, .package-detail li, .overlay, .so
     right: 0;
     top: 0;
     left: 280px;
-    padding: 20px 10px;
+    padding: 10px 10px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
