@@ -1,3 +1,5 @@
+var token = require('./token.js');
+
 var validateRequest = {
 
   validate:function(req, res, next){
@@ -11,12 +13,15 @@ var validateRequest = {
 
   ensureAuthorized:function(req, res, next) {
       var bearerToken;
-      var bearerHeader = req.headers["authorization"];
-      if (typeof bearerHeader !== 'undefined') {
-          var bearer = bearerHeader.split(" ");
-          bearerToken = bearer[1];
-          req.token = bearerToken;
-          next();
+      var loggedInToken = req.headers["loggedintoken"];
+      var userAgent = req.headers["user-agent"];
+      if (loggedInToken !== undefined) {
+          var decodedToken = token.verifyJWT(loggedInToken, userAgent);
+          if(decodedToken !== null){
+            next();
+          }else{
+            res.sendFile('404.html', { root: __dirname +'/public/views' });
+          }
       } else {
           res.sendFile('404.html', { root: __dirname +'/public/views' });
   				// res.sendStatus(403, "Forbidden");

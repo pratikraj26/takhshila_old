@@ -5,21 +5,24 @@ var express         = require('express'),
     io              = require('socket.io').listen(server),
     validator       = require('validator'),
     md5             = require('md5'),
-    jwt             = require('jsonwebtoken'),
 		bodyParser      = require('body-parser'),
 		device				  = require('express-device'),
 		uncapitalize	  = require('express-uncapitalize'),
+		slash	          = require('./slash.js'),
+    config          = require('./config.js'),
+    token           = require('./token.js'),
     validateRequest = require('./validateRequest'),
     db              = require('./db'),
-    onlineUsers     = [];
+    onlineUsers     = [],
+    liveClasses     = {},
+    peers           = {};
 
-var config = {
-	port: process.env.PORT || 3000,
-  SECRET_KEY: 'haxth@tbox23'
-};
+app.enable('strict routing');
+
+app.use(slash());
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(device.capture({ parseUserAgent: true }));
 
 device.enableDeviceHelpers(app);
@@ -46,20 +49,6 @@ server.listen(config.port, function(){
   db.connectDb();
 });
 
-var generateJWT = function(userProfile, userAgent){
-  userProfile.userAgent = userAgent;
-  return jwt.sign(userProfile, config.SECRET_KEY);
-}
-
-var verifyJWT = function(token, userAgent){
-  var decoded = jwt.verify(token, config.SECRET_KEY);
-  if(decoded.userAgent == userAgent){
-    return decoded;
-  }
-
-  return null;
-}
-
 io.on('connection', function(client) {
 
   // for(item in client.handshake.headers){
@@ -67,6 +56,8 @@ io.on('connection', function(client) {
   //     console.log(client.handshake.headers[item]);
   //   }
   // }
+
+  // console.log(client.handshake.query);
 
   client.userAgent = client.handshake.headers['user-agent'];
   client.userAuthenticated = false;
@@ -90,7 +81,7 @@ io.on('connection', function(client) {
         output.authentication = false;
         output.user_data = null;
       }else{
-        var decodedToken = verifyJWT(loggedInToken, client.userAgent);
+        var decodedToken = token.verifyJWT(loggedInToken, client.userAgent);
         if(decodedToken !== null){
           client.userAuthenticated = true;
           client.userProfile = {
@@ -171,7 +162,7 @@ io.on('connection', function(client) {
                     'name' : response.user_data.name,
                     'email' : response.user_data.email
                   };
-                  var loggedInToken = generateJWT(publicProfile, client.userAgent);
+                  var loggedInToken = token.generateJWT(publicProfile, client.userAgent);
                   output.success = true;
                   output.data = publicProfile;
                   output.loggedInToken = loggedInToken;
@@ -232,7 +223,7 @@ io.on('connection', function(client) {
                 'name'    : response.data.name,
                 'email'   : response.data.email
               };
-              var loggedInToken = generateJWT(publicProfile, client.userAgent);
+              var loggedInToken = token.generateJWT(publicProfile, client.userAgent);
               output.success = true;
               output.data = publicProfile;
               output.loggedInToken = loggedInToken;
@@ -255,4 +246,55 @@ io.on('connection', function(client) {
     }
   });
 
+  client.on('join.class', function(data, callback){
+    var output = {
+      success: false,
+      error: null,
+      data: null
+    };
+    if(!client.userAuthenticated){
+      output.error = "You are not authorized to join this room.";
+      callback(output);
+    }else{
+      var class_id = data.class_id;
+      var liveClass = liveClasses[class_id];
+
+      db.getClass(class_id, function(response){
+        if(response.success){
+          if(response.data === null){
+            output.error = "Invalid class ID.";
+            callback(output);
+          }else{
+            client.class_id = class_id;
+            if(liveClasses[class_id] === undefined){
+              liveClasses[class_id] = [];
+            }
+            if(liveClasses[class_id].indexOf(client.userProfile.user_id) == -1){
+              liveClasses[class_id][client.userProfile.user_id] = client;
+            }
+            for(user_id in liveClasses[class_id]){
+              if(liveClasses[class_id][user_id].userProfile.user_id != client.userProfile.user_id){
+                liveClasses[class_id][user_id].emit('peer.connected', {user_id: user_id});
+              }
+            }
+            // console.log(liveClasses);
+          }
+        }else{
+          output.error = response.error;
+          callback(output);
+        }
+      });
+    }
+  });
+
+  client.on('msg', function (data) {
+    console.log("New msg");
+    console.log(data);
+    if (liveClasses[client.class_id][data.to_user_id]) {
+      console.log('Redirecting message to', data.to_user_id, 'by', data.from_user_id);
+      liveClasses[client.class_id][data.to_user_id].emit('msg', data);
+    } else {
+      console.warn('Invalid user');
+    }
+  });
 });

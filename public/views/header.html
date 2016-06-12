@@ -15,8 +15,8 @@
       </div>
       <div class="navigation-navbar" ng-class="!navCollapsed && 'open'">
         <ul class="navigation-bar navigation-bar-right">
-          <li class = "featured" ng-show="!navStick"><a class = "button" ng-class="{'sliding-middle-out':navStick}" ng-click="open_login_modal();" lx-ripple><span>Signup / Login</span></a></li>
-          <li ng-show="navStick"><a class = "sliding-middle-out" ng-href = "#" ng-click="open_login_modal()"><span>Signup / Login</span></a></li>
+          <li class = "featured" ng-show="!navStick && !loggedIn"><a class = "button" ng-class="{'sliding-middle-out':navStick}" ng-click="open_login_modal();" lx-ripple><span>Signup / Login</span></a></li>
+          <li ng-show="navStick && !loggedIn"><a class = "sliding-middle-out" ng-href = "#" ng-click="open_login_modal()"><span>Signup / Login</span></a></li>
           <li><a class = "sliding-middle-out" ng-href="/teach"><span>Are you a teacher ?</span></a></li>
         </ul>
       </div>

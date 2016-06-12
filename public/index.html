@@ -2,11 +2,11 @@
 <html ng-app="takhshila">
 <head>
 	<title>Takhshila | Keep Learning</title>
-	<script>document.write('<base href="' + document.location + '" />');</script>
+	<script>document.write('<base href="/" />');</script>
 	<!-- Load app css files -->
-	<link rel="stylesheet" href="bower_components/lumx/dist/lumx.custom.css">
-	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.custom.min.css">
-	<link rel="stylesheet" href="bower_components/semantic/dist/semantic.min.css">
+	<link rel="stylesheet" href="/bower_components/lumx/dist/lumx.custom.css">
+	<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.custom.min.css">
+	<link rel="stylesheet" href="/bower_components/semantic/dist/semantic.min.css">
 	<!-- <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
 	<!-- <link rel="stylesheet" href="/css/semantic.min.css"> -->
 	<link rel="stylesheet" href="/css/style.css">
@@ -16,29 +16,31 @@
 	<script src="/socket.io/socket.io.js"></script>
 
 	<!-- Load angular component files -->
-	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="http://cdn.peerjs.com/0.3/peer.min.js"></script>
 	<script src='/js/particles.min.js'></script>
-	<script src="bower_components/angular/angular.min.js"></script>
-	<script src="bower_components/angular-route/angular-route.min.js"></script>
-	<script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
-	<script src="bower_components/semantic/dist/semantic.min.js"></script>
-	<script src="bower_components/angular-semantic-ui/dist/angular-semantic-ui.js"></script>
+	<script src="/bower_components/angular/angular.min.js"></script>
+	<script src="/bower_components/angular-route/angular-route.min.js"></script>
+	<script src="/bower_components/angular-cookies/angular-cookies.min.js"></script>
+	<script src="/bower_components/semantic/dist/semantic.min.js"></script>
+	<script src="/bower_components/angular-semantic-ui/dist/angular-semantic-ui.js"></script>
 
 
 	<!-- Load app files -->
-	<script src="main.js"></script>
+	<script src="/main.js"></script>
 	<script src="/js/controllers.js"></script>
 	<script src="/js/directive.js"></script>
 	<script src="/js/socketFactory.js"></script>
 	<script src="/js/factory.js"></script>
 	<script src="/js/service.js"></script>
+	<script src="/js/adapter.js"></script>
 </head>
 <body ng-controller="MainCtrl" scroll id = "landing-page" my-document-click>
-	<div ng-include src = "'/views/header.html'"></div>
+	<div ng-if = "page != 'LiveClass'" ng-include src = "'/views/header.html'"></div>
 	<main class="main" role="main">
 		<div ng-view class="flex"></div>
 	</main>
-	<div ng-include src = "'/views/footer.html'"></div>
+	<div ng-if = "page != 'LiveClass'" ng-include src = "'/views/footer.html'"></div>
 	<div class = "col-md-4 col-sm-12 col-xs-12">
 	</div>
 	<modal ng-model="show_login_modal" id = "login-modal">

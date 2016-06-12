@@ -166,5 +166,22 @@ module.exports = {
         })
       }
     });
-  }
+  },
+
+  getClass: function(class_id, callback){
+    var output = {
+      success: false,
+      data: null,
+      error: null
+    };
+    if(class_id == 1234){
+      output.data = {
+        class_id: 1234,
+        student_id: 122558444,
+        teacher_id: 1445225
+      }
+    }
+    output.success = true;
+    callback(output);
+  },
 }

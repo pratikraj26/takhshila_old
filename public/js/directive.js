@@ -1,4 +1,5 @@
 app
+
 .directive('scroll', function($window) {
 	return {
 		link: function(scope, element, attrs) {
@@ -17,6 +18,7 @@ app
 		}
 	};
 })
+
 .directive('equalizeSize', function($window) {
 	return {
 		link: function(scope, element, attrs) {
@@ -46,6 +48,7 @@ app
 		}
 	};
 })
+
 .directive('lxRipple', ['$timeout', function($timeout){
 	var offset = function(element){
 
@@ -210,3 +213,23 @@ app
 		}
 	};
 }])
+
+.directive('videoPlayer', function ($sce) {
+	return {
+		template: '<div><video ng-src="" autoplay></video></div>',
+		restrict: 'E',
+		replace: true,
+		scope: {
+			vidSrc: '@'
+		},
+		link: function (scope) {
+			console.log('Initializing video-player');
+			scope.trustSrc = function () {
+				if (!scope.vidSrc) {
+					return undefined;
+				}
+				return $sce.trustAsResourceUrl(scope.vidSrc);
+			};
+		}
+	};
+});

@@ -1,17 +1,18 @@
 var app = angular.module('takhshila', ['ngRoute', 'ngCookies', 'angularify.semantic'])
 
-// .factory('authInterceptor', function ($rootScope, $q, $location) {
-//     return {
-//         // Add authorization token to headers
-//         request: function (config) {
-//             config.headers = config.headers || {};
-//             var token = $rootScope.token;
-//             config.headers['x-auth-token'] = token;
-//             return config;
-//         }
-//     };
-// })
-//
+.factory('authInterceptor', function ($rootScope, $q, $location, $cookies) {
+    return {
+        // Add authorization token to headers
+        request: function (config) {
+            config.headers = config.headers || {};
+            if($cookies.get('loggedInToken') !== undefined && $cookies.get('loggedInToken') !== null){
+              config.headers['loggedInToken'] = $cookies.get('loggedInToken');
+            }
+            return config;
+        }
+    };
+})
+
 .run(function($cookies, $rootScope){
   $rootScope.loggedInToken = null;
   if($cookies.get('loggedInToken') !== undefined && $cookies.get('loggedInToken') !== null){
@@ -19,7 +20,10 @@ var app = angular.module('takhshila', ['ngRoute', 'ngCookies', 'angularify.seman
   }
 })
 
-.config(function ($routeProvider, $locationProvider) {
+.config(function ($routeProvider, $locationProvider, $httpProvider) {
+  $httpProvider.useApplyAsync(true);
+  $httpProvider.interceptors.push('authInterceptor');
+
   $routeProvider
 
   .when('/', {
@@ -47,8 +51,14 @@ var app = angular.module('takhshila', ['ngRoute', 'ngCookies', 'angularify.seman
     controller: 'ProfileCtrl'
   })
 
+  .when('/live-class/:roomId', {
+    templateUrl: 'secureViews/live-class.html',
+    controller: 'LiveCLassCtrl'
+  })
+
   .when('/404', {
-    templateUrl: 'views/404.html'
+    templateUrl: 'views/404.html',
+    controller: '404Ctrl'
   })
 
   .otherwise({
