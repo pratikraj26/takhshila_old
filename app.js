@@ -246,7 +246,7 @@ io.on('connection', function(client) {
     }
   });
 
-  client.on('join.class', function(data, callback){
+  client.on('peer.connect', function(data, callback){
     var output = {
       success: false,
       error: null,
@@ -257,7 +257,7 @@ io.on('connection', function(client) {
       callback(output);
     }else{
       var class_id = data.class_id;
-      var liveClass = liveClasses[class_id];
+      var peer_id = data.peer_id;
 
       db.getClass(class_id, function(response){
         if(response.success){
@@ -266,6 +266,7 @@ io.on('connection', function(client) {
             callback(output);
           }else{
             client.class_id = class_id;
+            client.peer_id = peer_id;
             if(liveClasses[class_id] === undefined){
               liveClasses[class_id] = [];
             }
@@ -273,10 +274,16 @@ io.on('connection', function(client) {
               liveClasses[class_id][client.userProfile.user_id] = client;
             }
             for(user_id in liveClasses[class_id]){
-              if(liveClasses[class_id][user_id].userProfile.user_id != client.userProfile.user_id){
-                liveClasses[class_id][user_id].emit('peer.connected', {user_id: user_id});
+              if(user_id != client.userProfile.user_id){
+                var data = {
+                  user_id: user_id,
+                  peer_id: client.peer_id
+                };
+                liveClasses[class_id][user_id].emit('peer.connected', data);
               }
             }
+            output.success = true;
+            callback(output);
             // console.log(liveClasses);
           }
         }else{
@@ -297,4 +304,5 @@ io.on('connection', function(client) {
       console.warn('Invalid user');
     }
   });
+
 });

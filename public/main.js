@@ -51,7 +51,7 @@ var app = angular.module('takhshila', ['ngRoute', 'ngCookies', 'angularify.seman
     controller: 'ProfileCtrl'
   })
 
-  .when('/live-class/:roomId', {
+  .when('/live-class/:class_id', {
     templateUrl: 'secureViews/live-class.html',
     controller: 'LiveCLassCtrl'
   })

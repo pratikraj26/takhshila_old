@@ -127,17 +127,75 @@ app
   $rootScope.page = "Profile";
 })
 
-.controller('LiveCLassCtrl', function($scope, $location, $window, $rootScope, $timeout, $cookies, $routeParams, socket, VideoStream, Room) {
+.controller('LiveCLassCtrl', function($scope, $location, $window, $rootScope, $timeout, $cookies, $routeParams, $sce, socket, VideoStream) {
+  $scope.localVdoURL = null;
+  $scope.remoteVdoURL = null;
   $rootScope.page = "LiveClass";
   $rootScope.$watch('loggedIn', function(loggedIn){
     if(loggedIn != null){
       if(!$rootScope.loggedIn){
+        console.log("You are not logged In");
         $location.path('/');
       }else{
-        var peer = new Peer({key: 'lwjd5qra8257b9'});
-        peer.on('open', function(id) {
-          console.log('My peer ID is: ' + id);
-        });
+        if(!$routeParams.class_id){
+          console.log("Class ID is not set");
+          $location.path('/');
+        }else{
+          var stream,
+              peer = new Peer({key: 'lwjd5qra8257b9'});
+
+          var handleCall = function(call){
+            if($scope.existingCall){
+              $scope.existingCall.close();
+            }
+            call.on('stream', function(remoteStream){
+              $scope.remoteVdoURL = $sce.trustAsResourceUrl(URL.createObjectURL(remoteStream));
+            });
+            $scope.existingCall = call;
+          }
+
+          peer.on('open', function(peer_id) {
+            VideoStream.get()
+            .then(function(s){
+              $scope.localStream = s;
+              $scope.localVdoURL = $sce.trustAsResourceUrl(URL.createObjectURL($scope.localStream));
+              var data = {
+                class_id: $routeParams.class_id,
+                peer_id: peer_id
+              };
+              socket.emit('peer.connect', data, function(response){
+                if(response.success){
+                  console.log("Peer connected with id# " + peer_id);
+                }else{
+                  alert(response.error);
+                  $location.path('/');
+                }
+              });
+            }, function () {
+              $scope.error = 'No audio/video permissions. Please refresh your browser and allow the audio/video capturing.';
+              console.log($scope.error);
+            });
+          });
+
+          socket.on('peer.connected', function(response){
+            var connection_user_id = response.user_id;
+            var connection_peer_id = response.peer_id;
+            var call = peer.call(connection_peer_id, $scope.localStream);
+            handleCall(call);
+          });
+
+          peer.on('call', function(call){
+            console.log(call);
+            console.log("Receiving a call from #" + call.peer);
+            call.answer($scope.localStream);
+            handleCall(call);
+          });
+
+          peer.on('error', function(err){
+            console.log(err.message);
+          });
+        }
+
         // if (!window.RTCPeerConnection || !navigator.getUserMedia) {
         //   $scope.error = 'WebRTC is not supported by your browser. You can try the app with Chrome and Firefox.';
         //   return;
