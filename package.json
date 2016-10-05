@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/pratikraj26/takhshila/issues"
   },
-  "homepage": "https://github.com/pratikraj26/takhshila#readme"
+  "homepage": "https://github.com/pratikraj26/takhshila#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "express-device": "^0.4.2",
+    "express-uncapitalize": "^1.0.0",
+    "mongoose": "^4.6.2",
+    "socket.io": "^1.4.8"
+  }
 }
